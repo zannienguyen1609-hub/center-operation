@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hello</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: #fef3c7;
+      font-family: sans-serif;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      color: #0c4a6e;
+    }
+
+    button {
+      font-size: 1.1rem;
+      font-family: sans-serif;
+      padding: 0.75rem 2rem;
+      background-color: #0284c7;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0369a1;
+    }
+
+    input {
+      font-size: 1rem;
+      font-family: sans-serif;
+      padding: 0.6rem 1rem;
+      border: 2px solid #0284c7;
+      border-radius: 8px;
+      margin-bottom: 0.75rem;
+      text-align: center;
+      outline: none;
+    }
+
+    button.danger {
+      background-color: #ef4444;
+      margin-top: 0.75rem;
+    }
+
+    button.danger:hover {
+      background-color: #dc2626;
+    }
+  </style>
+</head>
+<body>
+  <h1>Xin chào, Zannie</h1>
+  <input id="nameInput" type="text" placeholder="Gõ tên bạn vào đây...">
+  <button onclick="alert('Hello, ' + (document.getElementById('nameInput').value || 'bạn') + '!')">Bấm đi</button>
+  <button class="danger" onclick="alert('Mình bảo đừng cơ mà :(')">Đừng bấm</button>
+</body>
+</html>
