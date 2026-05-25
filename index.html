@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Phân Công Trách Nhiệm Vận Hành – IELTS 1984</title>
+<title>Ma Trận Phân Công & SLA Vận Hành – Chi Nhánh ILA</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -15,13 +15,24 @@
     --border:       #E5E5EA;
     --text:         #1D1D1F;
     --muted:        #6E6E73;
-    --r:  #D32F2F; --r-bg:  #FFF0F0; --r-br: #FFCDD2;
-    --a:  #F37500; --a-bg:  #FFF4E6; --a-br: #FFD9B3;
-    --c:  #1565C0; --c-bg:  #EFF5FF; --c-br: #BBDEFB;
-    --i:  #2E7D32; --i-bg:  #F0FFF1; --i-br: #C8E6C9;
-    --ops-col:  #F37500;
-    --cls-col:  #7B3FF2;
-    --acad-col: #0284C7;
+
+    /* block colors */
+    --daily-col:    #F37500;
+    --daily-bg:     #FFF4E6;
+    --weekly-col:   #0284C7;
+    --weekly-bg:    #EFF9FF;
+    --monthly-col:  #7B3FF2;
+    --monthly-bg:   #F5F0FF;
+    --campaign-col: #15803D;
+    --campaign-bg:  #F0FFF4;
+    --adhoc-col:    #DC2626;
+    --adhoc-bg:     #FFF5F5;
+
+    /* PIC chips */
+    --ec-col:    #F37500; --ec-bg:    #FFF4E6; --ec-br:    #FFD9B3;
+    --admin-col: #0284C7; --admin-bg: #EFF9FF; --admin-br: #BAE6FD;
+    --mgr-col:   #7B3FF2; --mgr-bg:   #F5F0FF; --mgr-br:   #DDD6FE;
+    --ta-col:    #15803D; --ta-bg:    #F0FFF4; --ta-br:    #BBF7D0;
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -42,44 +53,39 @@
     border-bottom: 1px solid var(--border);
     padding: 32px 24px 24px;
   }
-  .header-inner { max-width: 1100px; margin: 0 auto; }
+  .header-inner { max-width: 1000px; margin: 0 auto; }
 
   .brand {
     font-size: 11px; font-weight: 700; letter-spacing: 2.5px;
     text-transform: uppercase; color: var(--orange); margin-bottom: 8px;
   }
-
   h1 {
-    font-size: 30px; font-weight: 800; line-height: 1.25;
-    color: var(--text); margin-bottom: 6px;
+    font-size: 28px; font-weight: 800; line-height: 1.3;
+    color: var(--text); margin-bottom: 8px;
   }
   h1 em { font-style: normal; color: var(--orange); }
+  .header-desc {
+    font-size: 14px; color: var(--muted); max-width: 680px; line-height: 1.6;
+  }
 
-  .header-meta { font-size: 13px; color: var(--muted); }
-
+  /* ── PIC LEGEND ── */
   .legend {
-    display: flex; gap: 16px; flex-wrap: wrap;
+    display: flex; gap: 12px; flex-wrap: wrap;
     margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border);
   }
-  .legend-item {
-    display: flex; align-items: center; gap: 7px;
-    font-size: 13px; color: var(--muted);
+  .legend-item { display: flex; align-items: center; gap: 7px; font-size: 13px; color: var(--muted); }
+  .pic-chip {
+    display: inline-flex; align-items: center; padding: 3px 10px;
+    border-radius: 20px; font-size: 12px; font-weight: 700; border: 1.5px solid;
+    white-space: nowrap;
   }
-
-  /* ── BADGE ── */
-  .badge {
-    width: 24px; height: 24px; border-radius: 6px;
-    display: inline-flex; align-items: center; justify-content: center;
-    font-size: 11px; font-weight: 800; flex-shrink: 0;
-  }
-  .badge-R { background: var(--r-bg); color: var(--r); border: 1.5px solid var(--r-br); }
-  .badge-A { background: var(--a-bg); color: var(--a); border: 1.5px solid var(--a-br); }
-  .badge-C { background: var(--c-bg); color: var(--c); border: 1.5px solid var(--c-br); }
-  .badge-I { background: var(--i-bg); color: var(--i); border: 1.5px solid var(--i-br); }
-  .badge-empty { background: transparent; border: 1.5px solid var(--border); }
+  .chip-ec    { background: var(--ec-bg);    color: var(--ec-col);    border-color: var(--ec-br); }
+  .chip-admin { background: var(--admin-bg); color: var(--admin-col); border-color: var(--admin-br); }
+  .chip-mgr   { background: var(--mgr-bg);   color: var(--mgr-col);   border-color: var(--mgr-br); }
+  .chip-ta    { background: var(--ta-bg);    color: var(--ta-col);    border-color: var(--ta-br); }
 
   /* ── PAGE WRAP ── */
-  .page-wrap { max-width: 1100px; margin: 0 auto; padding: 28px 24px 0; }
+  .page-wrap { max-width: 1000px; margin: 0 auto; padding: 28px 24px 0; }
 
   /* ── FILTERS ── */
   .controls {
@@ -94,13 +100,13 @@
     font-size: 13px; font-weight: 600; font-family: 'Nunito', sans-serif;
     cursor: pointer; transition: all .18s;
   }
-  .pill:hover,
+  .pill:hover { border-color: var(--orange); color: var(--orange); background: var(--orange-light); }
   .pill.active { border-color: var(--orange); color: var(--orange); background: var(--orange-light); }
 
   /* ── SUMMARY CARDS ── */
   .summary {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
     gap: 12px; margin-bottom: 28px;
   }
   .card {
@@ -114,9 +120,9 @@
   .card-val { font-size: 32px; font-weight: 800; margin: 8px 0 4px; }
   .card-sub  { font-size: 12px; color: var(--muted); }
   .c-orange { color: var(--orange); }
-  .c-purple { color: #7B3FF2; }
-  .c-red    { color: var(--r); }
-  .c-green  { color: var(--i); }
+  .c-blue   { color: var(--weekly-col); }
+  .c-purple { color: var(--monthly-col); }
+  .c-green  { color: var(--campaign-col); }
 
   /* ── BLOCK HEADER ── */
   .block-header {
@@ -124,20 +130,24 @@
     padding: 13px 18px; border-radius: 10px 10px 0 0;
     margin-top: 32px; border-left: 4px solid;
   }
-  .block-header.ops      { background: #FFF4E6; border-color: var(--ops-col); }
-  .block-header.class    { background: #F5F0FF; border-color: var(--cls-col); }
-  .block-header.academic { background: #EFF9FF; border-color: var(--acad-col); }
+  .block-header.daily    { background: var(--daily-bg);    border-color: var(--daily-col); }
+  .block-header.weekly   { background: var(--weekly-bg);   border-color: var(--weekly-col); }
+  .block-header.monthly  { background: var(--monthly-bg);  border-color: var(--monthly-col); }
+  .block-header.campaign { background: var(--campaign-bg); border-color: var(--campaign-col); }
+  .block-header.adhoc    { background: var(--adhoc-bg);    border-color: var(--adhoc-col); }
 
   .block-num {
     font-size: 11px; font-weight: 800; letter-spacing: 1px;
     text-transform: uppercase; padding: 3px 9px; border-radius: 5px;
   }
-  .ops      .block-num { background: var(--orange-mid); color: var(--ops-col); }
-  .class    .block-num { background: #E9DCFF;           color: var(--cls-col); }
-  .academic .block-num { background: #BAE6FD;           color: var(--acad-col); }
+  .daily    .block-num { background: var(--orange-mid);  color: var(--daily-col); }
+  .weekly   .block-num { background: #BAE6FD;            color: var(--weekly-col); }
+  .monthly  .block-num { background: #DDD6FE;            color: var(--monthly-col); }
+  .campaign .block-num { background: #BBF7D0;            color: var(--campaign-col); }
+  .adhoc    .block-num { background: #FECACA;            color: var(--adhoc-col); }
 
-  .block-title { font-size: 14px; font-weight: 700; }
-  .block-sub   { font-size: 12px; color: var(--muted); margin-left: auto; }
+  .block-title { font-size: 14px; font-weight: 800; }
+  .block-sub   { font-size: 12px; color: var(--muted); margin-left: auto; font-weight: 600; }
 
   /* ── TABLE ── */
   .table-wrap {
@@ -154,60 +164,78 @@
     font-size: 11px; font-weight: 700; letter-spacing: 1.2px;
     text-transform: uppercase; color: var(--muted);
     white-space: nowrap; border-bottom: 1px solid var(--border);
+    text-align: left;
   }
-  thead th:first-child    { text-align: left; min-width: 260px; }
-  thead th:nth-child(2)   { text-align: left; min-width: 170px; }
-  thead th:not(:first-child):not(:nth-child(2)) { width: 88px; text-align: center; }
+  th.col-stt { width: 44px; text-align: center; }
+  th.col-pic { width: 180px; }
 
   tbody tr { border-bottom: 1px solid var(--border); transition: background .12s; }
   tbody tr:last-child { border-bottom: none; }
   tbody tr:hover { background: #FAFAFA; }
 
   td { padding: 14px; vertical-align: top; }
-  td.role-cell { text-align: center; vertical-align: middle; }
+  td.col-stt { text-align: center; font-weight: 700; color: var(--muted); font-size: 13px; }
 
-  .task-name { font-weight: 700; line-height: 1.4; }
-  .task-desc { font-size: 12px; color: var(--muted); margin-top: 4px; line-height: 1.6; }
+  .task-name { font-weight: 700; line-height: 1.4; margin-bottom: 4px; }
+  .task-desc { font-size: 12px; color: var(--muted); line-height: 1.65; }
 
-  .cell-R .badge { background: var(--r-bg); color: var(--r); border: 1.5px solid var(--r-br); }
-  .cell-A .badge { background: var(--a-bg); color: var(--a); border: 1.5px solid var(--a-br); }
-  .cell-C .badge { background: var(--c-bg); color: var(--c); border: 1.5px solid var(--c-br); }
-  .cell-I .badge { background: var(--i-bg); color: var(--i); border: 1.5px solid var(--i-br); }
-
-  .priority-tag {
-    display: inline-block; font-size: 10px; font-weight: 700;
-    padding: 2px 7px; border-radius: 4px; letter-spacing: 0.5px;
-    text-transform: uppercase; margin-left: 8px; vertical-align: middle;
+  /* SLA */
+  .sla-list { list-style: none; padding: 0; margin: 0; }
+  .sla-list li {
+    font-size: 13px; color: var(--text); padding: 2px 0;
+    display: flex; align-items: flex-start; gap: 6px; line-height: 1.5;
   }
-  .p-high { background: #FFF0F0; color: var(--r); }
-  .p-med  { background: var(--orange-light); color: var(--orange); }
-  .p-low  { background: var(--c-bg); color: var(--c); }
-
-  .owner-chip {
-    display: inline-block; padding: 3px 10px; border-radius: 5px;
-    font-size: 11px; font-weight: 600;
-    background: #F5F5F7; color: var(--muted); border: 1px solid var(--border);
+  .sla-list li::before {
+    content: '▸'; color: var(--orange); font-size: 10px;
+    flex-shrink: 0; margin-top: 3px;
+  }
+  .sla-single { font-size: 13px; color: var(--text); line-height: 1.5; }
+  .sla-time {
+    font-weight: 700; color: var(--text);
+    background: var(--orange-light); padding: 0 4px; border-radius: 3px;
+    white-space: nowrap;
   }
 
-  /* ── NOTE ── */
+  /* PIC column */
+  td.col-pic { vertical-align: top; }
+  .pic-wrap { display: flex; flex-direction: column; gap: 6px; }
+  .pic-note { font-size: 11px; color: var(--muted); margin-top: 4px; line-height: 1.5; }
+
+  /* ── NOTE BOX ── */
   .note {
-    margin-top: 24px; padding: 16px 20px;
+    margin-top: 28px; padding: 20px 24px;
     background: var(--surface); border: 1px solid var(--border);
-    border-radius: 10px; font-size: 13px; color: var(--muted);
-    line-height: 1.7; border-left: 4px solid var(--orange);
+    border-radius: 12px; border-left: 4px solid var(--orange);
   }
-  .note strong { color: var(--text); }
-  .note strong.hi { color: var(--r); }
+  .note h3 {
+    font-size: 14px; font-weight: 800; color: var(--text);
+    margin-bottom: 12px;
+  }
+  .note ol { padding-left: 20px; }
+  .note ol li {
+    font-size: 13px; color: var(--muted); line-height: 1.7;
+    margin-bottom: 8px;
+  }
+  .note ol li strong { color: var(--text); }
+
+  /* ── BLOCK DESC ── */
+  .block-desc {
+    background: var(--surface); border: 1px solid var(--border);
+    border-top: none; padding: 10px 18px;
+    font-size: 13px; color: var(--muted); font-style: italic;
+    line-height: 1.6;
+  }
 
   /* ── RESPONSIVE ── */
   @media (max-width: 768px) {
     header { padding: 24px 16px 20px; }
-    h1 { font-size: 24px; }
+    h1 { font-size: 22px; }
     .page-wrap { padding: 20px 16px 0; }
     .block-sub { display: none; }
+    th.col-pic { width: 140px; }
   }
   @media (max-width: 480px) {
-    h1 { font-size: 20px; }
+    h1 { font-size: 19px; }
     .summary { grid-template-columns: repeat(2, 1fr); }
     .pill { font-size: 12px; padding: 5px 12px; }
   }
@@ -217,15 +245,16 @@
 
 <header>
   <div class="header-inner">
-    <div class="brand">IELTS 1984 · Operations Framework</div>
-    <h1>Ma Trận RACI – <em>Phân Công Vận Hành</em></h1>
-    <div class="header-meta">Cập nhật: Tháng 5/2026 &nbsp;·&nbsp; 3 Khối &nbsp;·&nbsp; 12 Task</div>
+    <div class="brand">ILA · Operations Framework</div>
+    <h1>Phân Công Công Việc & <em>SLA Vận Hành</em></h1>
+    <p class="header-desc">
+      Bản ma trận tổng hợp toàn bộ trách nhiệm vận hành chi nhánh, chia theo chu kỳ thực chiến, kèm chỉ số SLA định lượng và phân định rõ PIC giữa <strong>EC</strong>, <strong>TA</strong> và <strong>Admin</strong>.
+    </p>
     <div class="legend">
-      <div class="legend-item"><div class="badge badge-R">R</div> Responsible – Người thực hiện</div>
-      <div class="legend-item"><div class="badge badge-A">A</div> Accountable – Người chịu trách nhiệm cuối</div>
-      <div class="legend-item"><div class="badge badge-C">C</div> Consulted – Tham vấn trước khi làm</div>
-      <div class="legend-item"><div class="badge badge-I">I</div> Informed – Được thông báo kết quả</div>
-      <div class="legend-item"><div class="badge badge-empty">&nbsp;</div> Không liên quan</div>
+      <div class="legend-item"><span class="pic-chip chip-ec">EC</span> Tư vấn viên</div>
+      <div class="legend-item"><span class="pic-chip chip-admin">Admin</span> Vận hành / Hậu cần</div>
+      <div class="legend-item"><span class="pic-chip chip-mgr">Quản lý</span> CM / AS</div>
+      <div class="legend-item"><span class="pic-chip chip-ta">TA</span> Trợ giảng</div>
     </div>
   </div>
 </header>
@@ -234,287 +263,581 @@
 
   <!-- FILTERS -->
   <div class="controls">
-    <span class="filter-label">Lọc theo khối:</span>
+    <span class="filter-label">Lọc theo chu kỳ:</span>
     <button class="pill active" data-filter="all"      onclick="filterBlock(this,'all')">Tất cả</button>
-    <button class="pill"        data-filter="ops"      onclick="filterBlock(this,'ops')">Vận Hành & DVHV</button>
-    <button class="pill"        data-filter="class"    onclick="filterBlock(this,'class')">Quản Lý Lớp Học</button>
-    <button class="pill"        data-filter="academic" onclick="filterBlock(this,'academic')">Học Thuật</button>
+    <button class="pill"        data-filter="daily"    onclick="filterBlock(this,'daily')">Hàng ngày</button>
+    <button class="pill"        data-filter="weekly"   onclick="filterBlock(this,'weekly')">Hàng tuần</button>
+    <button class="pill"        data-filter="monthly"  onclick="filterBlock(this,'monthly')">Hàng tháng</button>
+    <button class="pill"        data-filter="campaign" onclick="filterBlock(this,'campaign')">Theo chiến dịch</button>
+    <button class="pill"        data-filter="adhoc"    onclick="filterBlock(this,'adhoc')">Đột xuất</button>
   </div>
 
   <!-- SUMMARY -->
   <div class="summary">
     <div class="card">
-      <div class="card-label">Tổng task</div>
-      <div class="card-val c-orange">12</div>
-      <div class="card-sub">Trải đều 3 khối chính</div>
+      <div class="card-label">Tổng nhiệm vụ</div>
+      <div class="card-val c-orange">27</div>
+      <div class="card-sub">Trải 5 chu kỳ vận hành</div>
     </div>
     <div class="card">
-      <div class="card-label">Vai trò tham gia</div>
+      <div class="card-label">Hàng ngày</div>
+      <div class="card-val c-orange">6</div>
+      <div class="card-sub">Đảm bảo chi nhánh ổn định</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Hàng tuần</div>
+      <div class="card-val c-blue">6</div>
+      <div class="card-sub">Đánh giá & chuẩn bị</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Hàng tháng</div>
       <div class="card-val c-purple">7</div>
-      <div class="card-sub">Ops Mgr, Supervisor, TA…</div>
-    </div>
-    <div class="card">
-      <div class="card-label">Ưu tiên Cao</div>
-      <div class="card-val c-red">5</div>
-      <div class="card-sub">Cần Owner rõ ràng ngay</div>
-    </div>
-    <div class="card">
-      <div class="card-label">Ưu tiên Trung bình</div>
-      <div class="card-val c-green">7</div>
-      <div class="card-sub">Theo dõi hằng tuần</div>
+      <div class="card-sub">Chốt số & báo cáo</div>
     </div>
   </div>
 
-  <!-- ══ BLOCK 1: OPS ══ -->
-  <div class="block-header ops" data-block="ops">
-    <span class="block-num">BLOCK 01</span>
-    <span class="block-title">Vận Hành & Dịch Vụ Học Viên</span>
-    <span class="block-sub">Operations & Customer Care</span>
+  <!-- ══ BLOCK 1: HÀNG NGÀY ══ -->
+  <div class="block-header daily" data-block="daily">
+    <span class="block-num">CHU KỲ 01</span>
+    <span class="block-title">Hàng Ngày (Daily Tasks)</span>
+    <span class="block-sub">6 nhiệm vụ</span>
   </div>
-  <div class="table-wrap" data-block="ops">
+  <div class="block-desc" data-block="daily">
+    Nhóm công việc đảm bảo chi nhánh mở cửa an toàn, lớp học diễn ra trơn tru và khách hàng được hỗ trợ lập tức.
+  </div>
+  <div class="table-wrap" data-block="daily">
     <table>
       <thead>
         <tr>
-          <th>Task</th>
-          <th>Owner Chính</th>
-          <th>Ops Manager</th>
-          <th>Supervisor</th>
-          <th>CS Staff</th>
-          <th>Kế Toán</th>
-          <th>Facilities</th>
-          <th>Academic Mgr</th>
+          <th class="col-stt">STT</th>
+          <th>Tên Nhiệm Vụ</th>
+          <th>Cam Kết Chất Lượng & Thời Gian (SLA)</th>
+          <th class="col-pic">PIC</th>
         </tr>
       </thead>
       <tbody>
-        <tr data-block="ops">
+        <tr>
+          <td class="col-stt">1</td>
           <td>
-            <div class="task-name">Tiếp nhận & Xử lý Feedback / Khiếu nại <span class="priority-tag p-high">Cao</span></div>
-            <div class="task-desc">Ghi nhận ca phàn nàn từ PH/HV → phân loại mức độ → điều phối giải quyết → xác nhận đóng ca. Deadline: &lt;24h (urgent) / &lt;72h (thường).</div>
+            <div class="task-name">Vệ sinh & Bảo trì cơ sở vật chất</div>
           </td>
-          <td><span class="owner-chip">CS Lead / Supervisor</span></td>
-          <td class="role-cell cell-A"><div class="badge">A</div></td>
-          <td class="role-cell cell-R"><div class="badge">R</div></td>
-          <td class="role-cell cell-R"><div class="badge">R</div></td>
-          <td class="role-cell"><div class="badge badge-empty">&nbsp;</div></td>
-          <td class="role-cell"><div class="badge badge-empty">&nbsp;</div></td>
-          <td class="role-cell cell-C"><div class="badge">C</div></td>
+          <td>
+            <ul class="sla-list">
+              <li>Kiểm tra sảnh, phòng học, nhà vệ sinh <span class="sla-time">3 lần/ngày</span> (Đầu giờ sáng, Giữa ca, Cuối ngày)</li>
+              <li>Xử lý lỗi mất an toàn (sàn ướt, điện hở) trong <span class="sla-time">5 phút</span></li>
+            </ul>
+          </td>
+          <td class="col-pic">
+            <div class="pic-wrap">
+              <span class="pic-chip chip-admin">Admin</span>
+              <span class="pic-note">Phối hợp với Tạp vụ</span>
+            </div>
+          </td>
         </tr>
-        <tr data-block="ops">
+        <tr>
+          <td class="col-stt">2</td>
           <td>
-            <div class="task-name">Kiểm tra & Điều phối Cơ sở Vật chất <span class="priority-tag p-med">Trung bình</span></div>
-            <div class="task-desc">Checklist hằng ngày: máy chiếu, loa, AC, điện, vệ sinh, an ninh. Báo cáo sự cố và điều phối sửa chữa với nhà cung cấp.</div>
+            <div class="task-name">Chuẩn bị học liệu & Thiết bị</div>
           </td>
-          <td><span class="owner-chip">Facilities Staff</span></td>
-          <td class="role-cell cell-A"><div class="badge">A</div></td>
-          <td class="role-cell cell-I"><div class="badge">I</div></td>
-          <td class="role-cell"><div class="badge badge-empty">&nbsp;</div></td>
-          <td class="role-cell"><div class="badge badge-empty">&nbsp;</div></td>
-          <td class="role-cell cell-R"><div class="badge">R</div></td>
-          <td class="role-cell"><div class="badge badge-empty">&nbsp;</div></td>
+          <td>
+            <span class="sla-single">In ấn tài liệu, chuẩn bị flashcards, máy chiếu đầy đủ ít nhất <span class="sla-time">30 phút trước giờ học</span></span>
+          </td>
+          <td class="col-pic">
+            <div class="pic-wrap">
+              <span class="pic-chip chip-admin">Admin</span>
+              <span class="pic-note">Hỗ trợ Giáo viên / TA</span>
+            </div>
+          </td>
         </tr>
-        <tr data-block="ops">
+        <tr>
+          <td class="col-stt">3</td>
           <td>
-            <div class="task-name">Quản lý Vật tư & Tài liệu học tập <span class="priority-tag p-med">Trung bình</span></div>
-            <div class="task-desc">Kiểm kho sách/giáo trình/quà tặng, đặt hàng bổ sung, làm việc với đối tác vận chuyển, cập nhật tồn kho trên hệ thống.</div>
+            <div class="task-name">Sắp xếp & Đặt phòng học phát sinh</div>
           </td>
-          <td><span class="owner-chip">Logistics Officer</span></td>
-          <td class="role-cell cell-A"><div class="badge">A</div></td>
-          <td class="role-cell cell-I"><div class="badge">I</div></td>
-          <td class="role-cell cell-C"><div class="badge">C</div></td>
-          <td class="role-cell cell-I"><div class="badge">I</div></td>
-          <td class="role-cell cell-R"><div class="badge">R</div></td>
-          <td class="role-cell"><div class="badge badge-empty">&nbsp;</div></td>
+          <td>
+            <span class="sla-single">Xử lý yêu cầu đổi phòng, đặt phòng học bù/makeup trong vòng <span class="sla-time">30 phút</span> từ khi nhận yêu cầu</span>
+          </td>
+          <td class="col-pic">
+            <div class="pic-wrap">
+              <span class="pic-chip chip-admin">Admin</span>
+            </div>
+          </td>
         </tr>
-        <tr data-block="ops">
+        <tr>
+          <td class="col-stt">4</td>
           <td>
-            <div class="task-name">Thu học phí, Xuất hóa đơn & Hoàn/Bảo lưu <span class="priority-tag p-high">Cao</span></div>
-            <div class="task-desc">Phát sinh hóa đơn theo đúng lộ trình, xử lý yêu cầu hoàn phí hoặc bảo lưu theo quy trình tài chính, đối soát cuối tháng.</div>
+            <div class="task-name">Phản hồi tin nhắn / Cuộc gọi CSKH</div>
           </td>
-          <td><span class="owner-chip">Kế Toán / CS</span></td>
-          <td class="role-cell cell-A"><div class="badge">A</div></td>
-          <td class="role-cell cell-I"><div class="badge">I</div></td>
-          <td class="role-cell cell-C"><div class="badge">C</div></td>
-          <td class="role-cell cell-R"><div class="badge">R</div></td>
-          <td class="role-cell"><div class="badge badge-empty">&nbsp;</div></td>
-          <td class="role-cell"><div class="badge badge-empty">&nbsp;</div></td>
+          <td>
+            <ul class="sla-list">
+              <li>Tin nhắn đến: Phản hồi trong vòng <span class="sla-time">15 phút</span> (khung giờ 8h–21h)</li>
+              <li>Cuộc gọi nhỡ: Gọi lại trong vòng <span class="sla-time">30 phút</span></li>
+            </ul>
+          </td>
+          <td class="col-pic">
+            <div class="pic-wrap">
+              <span class="pic-chip chip-ec">EC</span>
+              <span class="pic-note">Data phụ huynh phụ trách</span>
+            </div>
+          </td>
         </tr>
-        <tr data-block="ops">
+        <tr>
+          <td class="col-stt">5</td>
           <td>
-            <div class="task-name">Tổ chức Sự kiện Nội bộ & Ngoại khóa <span class="priority-tag p-med">Trung bình</span></div>
-            <div class="task-desc">Lên kế hoạch, phân công nhân sự, ngân sách, thực thi và đánh giá sau sự kiện (Halloween, Giáng sinh, thi học thuật, lễ tốt nghiệp…).</div>
+            <div class="task-name">Xử lý Khiếu nại khách hàng</div>
           </td>
-          <td><span class="owner-chip">Event Lead / Supervisor</span></td>
-          <td class="role-cell cell-A"><div class="badge">A</div></td>
-          <td class="role-cell cell-R"><div class="badge">R</div></td>
-          <td class="role-cell cell-R"><div class="badge">R</div></td>
-          <td class="role-cell cell-I"><div class="badge">I</div></td>
-          <td class="role-cell cell-C"><div class="badge">C</div></td>
-          <td class="role-cell cell-C"><div class="badge">C</div></td>
+          <td>
+            <ul class="sla-list">
+              <li>Ghi nhận lập tức</li>
+              <li>Ca thông thường: Giải quyết trong <span class="sla-time">4 tiếng</span></li>
+              <li>Ca nghiêm trọng: Báo cáo CM/AS, ra giải pháp trong <span class="sla-time">24h</span></li>
+            </ul>
+          </td>
+          <td class="col-pic">
+            <div class="pic-wrap">
+              <span class="pic-chip chip-ec">EC</span>
+              <span class="pic-note">Người tiếp nhận ca</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="col-stt">6</td>
+          <td>
+            <div class="task-name">Tìm TA dạy thay đột xuất (Cover absent)</div>
+          </td>
+          <td>
+            <span class="sla-single">Tìm và chốt nhân sự thay thế trong vòng <span class="sla-time">30–45 phút</span> kể từ khi nhận thông báo nghỉ của TA cũ</span>
+          </td>
+          <td class="col-pic">
+            <div class="pic-wrap">
+              <span class="pic-chip chip-admin">Admin</span>
+              <span class="pic-note">Hoặc TA Group Leader</span>
+            </div>
+          </td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <!-- ══ BLOCK 2: CLASS ══ -->
-  <div class="block-header class" data-block="class">
-    <span class="block-num">BLOCK 02</span>
-    <span class="block-title">Quản Lý Lớp Học & Chăm Sóc Định Kỳ</span>
-    <span class="block-sub">Class Management & Retention</span>
+  <!-- ══ BLOCK 2: HÀNG TUẦN ══ -->
+  <div class="block-header weekly" data-block="weekly">
+    <span class="block-num">CHU KỲ 02</span>
+    <span class="block-title">Hàng Tuần (Weekly Tasks)</span>
+    <span class="block-sub">6 nhiệm vụ</span>
   </div>
-  <div class="table-wrap" data-block="class">
+  <div class="block-desc" data-block="weekly">
+    Nhóm công việc đánh giá tiến độ kinh doanh, cập nhật hình ảnh trung tâm và chuẩn bị cho tuần kế tiếp.
+  </div>
+  <div class="table-wrap" data-block="weekly">
     <table>
       <thead>
         <tr>
-          <th>Task</th>
-          <th>Owner Chính</th>
-          <th>Ops Manager</th>
-          <th>Supervisor</th>
-          <th>CS Staff</th>
-          <th>Kế Toán</th>
-          <th>Facilities</th>
-          <th>Academic Mgr</th>
+          <th class="col-stt">STT</th>
+          <th>Tên Nhiệm Vụ</th>
+          <th>Cam Kết Chất Lượng & Thời Gian (SLA)</th>
+          <th class="col-pic">PIC</th>
         </tr>
       </thead>
       <tbody>
-        <tr data-block="class">
+        <tr>
+          <td class="col-stt">7</td>
           <td>
-            <div class="task-name">Chăm sóc Định kỳ (Care Calls) <span class="priority-tag p-high">Cao</span></div>
-            <div class="task-desc">Gọi điện/nhắn tin cập nhật tình hình học, chuyên cần, nhận xét GV nước ngoài. Phân chia danh sách lớp theo Supervisor để tránh trùng/bỏ sót. Tần suất: 1 lần/tháng tối thiểu.</div>
+            <div class="task-name">Kế hoạch nội dung mạng xã hội (SNS)</div>
           </td>
-          <td><span class="owner-chip">Supervisor phụ trách lớp</span></td>
-          <td class="role-cell cell-A"><div class="badge">A</div></td>
-          <td class="role-cell cell-R"><div class="badge">R</div></td>
-          <td class="role-cell cell-C"><div class="badge">C</div></td>
-          <td class="role-cell"><div class="badge badge-empty">&nbsp;</div></td>
-          <td class="role-cell"><div class="badge badge-empty">&nbsp;</div></td>
-          <td class="role-cell cell-I"><div class="badge">I</div></td>
+          <td>
+            <span class="sla-single">Hoàn thành và duyệt File Content Calendar trước <span class="sla-time">17h00 thứ Năm</span> cho tuần kế tiếp</span>
+          </td>
+          <td class="col-pic">
+            <div class="pic-wrap">
+              <span class="pic-chip chip-admin">Admin</span>
+              <span class="pic-note">Hoặc EC được phân công</span>
+            </div>
+          </td>
         </tr>
-        <tr data-block="class">
+        <tr>
+          <td class="col-stt">8</td>
           <td>
-            <div class="task-name">Theo dõi & Xử lý Học viên Nghỉ nhiều / Học lực Sụt <span class="priority-tag p-high">Cao</span></div>
-            <div class="task-desc">Phát hiện sớm (CRM alert), kích hoạt quy trình hỗ trợ: gọi PH, phối hợp Academic đề xuất Coaching/Tutor, ghi nhận kết quả can thiệp.</div>
+            <div class="task-name">Xếp lịch làm việc cho TA</div>
           </td>
-          <td><span class="owner-chip">Supervisor + Academic Mgr</span></td>
-          <td class="role-cell cell-A"><div class="badge">A</div></td>
-          <td class="role-cell cell-R"><div class="badge">R</div></td>
-          <td class="role-cell cell-I"><div class="badge">I</div></td>
-          <td class="role-cell"><div class="badge badge-empty">&nbsp;</div></td>
-          <td class="role-cell"><div class="badge badge-empty">&nbsp;</div></td>
-          <td class="role-cell cell-C"><div class="badge">C</div></td>
+          <td>
+            <span class="sla-single">Gửi lịch làm việc chi tiết cho toàn bộ 20 TA trước <span class="sla-time">17h00 thứ Sáu</span></span>
+          </td>
+          <td class="col-pic">
+            <div class="pic-wrap">
+              <span class="pic-chip chip-admin">Admin</span>
+            </div>
+          </td>
         </tr>
-        <tr data-block="class">
+        <tr>
+          <td class="col-stt">9</td>
           <td>
-            <div class="task-name">Xếp lớp & Quản lý Thời khóa biểu <span class="priority-tag p-med">Trung bình</span></div>
-            <div class="task-desc">Điều phối sĩ số, chuyển lớp, mở lớp mới dựa trên dữ liệu Sales và năng lực phòng. Cập nhật TKB lên hệ thống và thông báo các bên liên quan.</div>
+            <div class="task-name">Theo sát số liệu mở lớp & Tái tục</div>
           </td>
-          <td><span class="owner-chip">Supervisor / Ops Staff</span></td>
-          <td class="role-cell cell-A"><div class="badge">A</div></td>
-          <td class="role-cell cell-R"><div class="badge">R</div></td>
-          <td class="role-cell cell-C"><div class="badge">C</div></td>
-          <td class="role-cell"><div class="badge badge-empty">&nbsp;</div></td>
-          <td class="role-cell cell-I"><div class="badge">I</div></td>
-          <td class="role-cell cell-C"><div class="badge">C</div></td>
+          <td>
+            <ul class="sla-list">
+              <li>Cập nhật tiến độ tái tục (Re-enrollment) trước <span class="sla-time">12h00 thứ Sáu</span></li>
+              <li>Cảnh báo lớp hụt chỉ tiêu trước <span class="sla-time">48h</span> trước họp tuần</li>
+            </ul>
+          </td>
+          <td class="col-pic">
+            <div class="pic-wrap">
+              <span class="pic-chip chip-ec">EC</span>
+              <span class="pic-note">Nhóm trưởng EC tổng hợp</span>
+            </div>
+          </td>
         </tr>
-        <tr data-block="class">
+        <tr>
+          <td class="col-stt">10</td>
           <td>
-            <div class="task-name">Báo cáo Tỉ lệ Tái tục (Re-enrollment Report) <span class="priority-tag p-med">Trung bình</span></div>
-            <div class="task-desc">Tổng hợp dữ liệu tái tục theo lớp/tháng, phân tích nguyên nhân không gia hạn, đề xuất action plan. Báo cáo hằng tháng lên Manager.</div>
+            <div class="task-name">Kiểm tra tuân thủ chính sách ILA</div>
           </td>
-          <td><span class="owner-chip">Supervisor</span></td>
-          <td class="role-cell cell-A"><div class="badge">A</div></td>
-          <td class="role-cell cell-R"><div class="badge">R</div></td>
-          <td class="role-cell cell-C"><div class="badge">C</div></td>
-          <td class="role-cell"><div class="badge badge-empty">&nbsp;</div></td>
-          <td class="role-cell"><div class="badge badge-empty">&nbsp;</div></td>
-          <td class="role-cell cell-I"><div class="badge">I</div></td>
+          <td>
+            <span class="sla-single">Kiểm tra xác suất đội Admission thực hiện đúng quy trình <span class="sla-time">1 lần/tuần</span></span>
+          </td>
+          <td class="col-pic">
+            <div class="pic-wrap">
+              <span class="pic-chip chip-mgr">Quản lý</span>
+              <span class="pic-note">CM / AS</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="col-stt">11</td>
+          <td>
+            <div class="task-name">Dự giờ & Giám sát chất lượng TA</div>
+          </td>
+          <td>
+            <ul class="sla-list">
+              <li>Dự giờ tối thiểu <span class="sla-time">2 lớp/tuần/mỗi TA</span></li>
+              <li>Đưa ra kế hoạch cải thiện (PIP) trong vòng <span class="sla-time">24h</span> nếu TA yếu</li>
+            </ul>
+          </td>
+          <td class="col-pic">
+            <div class="pic-wrap">
+              <span class="pic-chip chip-mgr">Quản lý</span>
+              <span class="pic-note">Hoặc TA Group Leader</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="col-stt">12</td>
+          <td>
+            <div class="task-name">Sắp xếp & Vệ sinh kho hàng</div>
+          </td>
+          <td>
+            <span class="sla-single">Kiểm tra, sắp xếp theo nguyên tắc FIFO vào <span class="sla-time">chiều thứ Sáu</span> hàng tuần</span>
+          </td>
+          <td class="col-pic">
+            <div class="pic-wrap">
+              <span class="pic-chip chip-admin">Admin</span>
+            </div>
+          </td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <!-- ══ BLOCK 3: ACADEMIC ══ -->
-  <div class="block-header academic" data-block="academic">
-    <span class="block-num">BLOCK 03</span>
-    <span class="block-title">Học Thuật – Đầu Mối Phối Hợp</span>
-    <span class="block-sub">Academic Coordination</span>
+  <!-- ══ BLOCK 3: HÀNG THÁNG ══ -->
+  <div class="block-header monthly" data-block="monthly">
+    <span class="block-num">CHU KỲ 03</span>
+    <span class="block-title">Hàng Tháng (Monthly Tasks)</span>
+    <span class="block-sub">7 nhiệm vụ</span>
   </div>
-  <div class="table-wrap" data-block="academic">
+  <div class="block-desc" data-block="monthly">
+    Nhóm công việc chốt số liệu, dự báo vận hành và báo cáo lên cấp trên.
+  </div>
+  <div class="table-wrap" data-block="monthly">
     <table>
       <thead>
         <tr>
-          <th>Task</th>
-          <th>Owner Chính</th>
-          <th>Ops Manager</th>
-          <th>Supervisor</th>
-          <th>CS Staff</th>
-          <th>TA Lead</th>
-          <th>Giáo Viên NT</th>
-          <th>Academic Mgr</th>
+          <th class="col-stt">STT</th>
+          <th>Tên Nhiệm Vụ</th>
+          <th>Cam Kết Chất Lượng & Thời Gian (SLA)</th>
+          <th class="col-pic">PIC</th>
         </tr>
       </thead>
       <tbody>
-        <tr data-block="academic">
+        <tr>
+          <td class="col-stt">13</td>
           <td>
-            <div class="task-name">Tuyển dụng & Onboarding Trợ giảng (TA) <span class="priority-tag p-high">Cao</span></div>
-            <div class="task-desc">Đăng tin, phỏng vấn, đào tạo hội nhập, phân lịch trực lớp. Tạo hồ sơ TA trên hệ thống, ký hợp đồng, hướng dẫn quy trình báo cáo.</div>
+            <div class="task-name">Dự báo số lượng lớp mới (Forecast)</div>
           </td>
-          <td><span class="owner-chip">Academic Mgr / Supervisor</span></td>
-          <td class="role-cell cell-I"><div class="badge">I</div></td>
-          <td class="role-cell cell-C"><div class="badge">C</div></td>
-          <td class="role-cell"><div class="badge badge-empty">&nbsp;</div></td>
-          <td class="role-cell cell-R"><div class="badge">R</div></td>
-          <td class="role-cell"><div class="badge badge-empty">&nbsp;</div></td>
-          <td class="role-cell cell-A"><div class="badge">A</div></td>
+          <td>
+            <span class="sla-single">Họp đồng bộ Sales & Care, chốt số lớp dự kiến mở trước <span class="sla-time">ngày 15 hàng tháng</span> cho tháng sau</span>
+          </td>
+          <td class="col-pic">
+            <div class="pic-wrap">
+              <span class="pic-chip chip-ec">EC</span>
+              <span class="pic-note">Phối hợp với Quản lý</span>
+            </div>
+          </td>
         </tr>
-        <tr data-block="academic">
+        <tr>
+          <td class="col-stt">14</td>
           <td>
-            <div class="task-name">Đánh giá Hiệu suất TA (KPI Monthly) <span class="priority-tag p-med">Trung bình</span></div>
-            <div class="task-desc">Thu thập feedback từ GV nước ngoài & Supervisor, tổng hợp điểm KPI, tổ chức 1-1 feedback, đề xuất tăng/giảm giờ hoặc kết thúc hợp đồng.</div>
+            <div class="task-name">Dự báo nhân sự TA (Forecast TA)</div>
           </td>
-          <td><span class="owner-chip">Academic Mgr</span></td>
-          <td class="role-cell cell-I"><div class="badge">I</div></td>
-          <td class="role-cell cell-C"><div class="badge">C</div></td>
-          <td class="role-cell"><div class="badge badge-empty">&nbsp;</div></td>
-          <td class="role-cell cell-R"><div class="badge">R</div></td>
-          <td class="role-cell cell-C"><div class="badge">C</div></td>
-          <td class="role-cell cell-A"><div class="badge">A</div></td>
+          <td>
+            <span class="sla-single">Quy đổi số lớp ra số giờ TA cần, chốt số lượng tuyển thêm trước <span class="sla-time">ngày 20 hàng tháng</span></span>
+          </td>
+          <td class="col-pic">
+            <div class="pic-wrap">
+              <span class="pic-chip chip-admin">Admin</span>
+            </div>
+          </td>
         </tr>
-        <tr data-block="academic">
+        <tr>
+          <td class="col-stt">15</td>
           <td>
-            <div class="task-name">Tổ chức Kiểm tra Định kỳ (Mid-term / Final) <span class="priority-tag p-high">Cao</span></div>
-            <div class="task-desc">Chuẩn bị và phê duyệt đề thi, sắp xếp phòng thi, giám sát thi, nhập điểm CRM, xuất bảng điểm và gửi cho PH đúng deadline.</div>
+            <div class="task-name">Kế hoạch Tái tục (Re-sales Planning)</div>
           </td>
-          <td><span class="owner-chip">Academic Mgr + Supervisor</span></td>
-          <td class="role-cell cell-I"><div class="badge">I</div></td>
-          <td class="role-cell cell-R"><div class="badge">R</div></td>
-          <td class="role-cell cell-I"><div class="badge">I</div></td>
-          <td class="role-cell cell-R"><div class="badge">R</div></td>
-          <td class="role-cell cell-C"><div class="badge">C</div></td>
-          <td class="role-cell cell-A"><div class="badge">A</div></td>
+          <td>
+            <span class="sla-single">Hoàn thành file kế hoạch chi tiết (mục tiêu, danh sách HV, kịch bản chăm sóc) trước <span class="sla-time">ngày 25 hàng tháng</span></span>
+          </td>
+          <td class="col-pic">
+            <div class="pic-wrap">
+              <span class="pic-chip chip-ec">EC</span>
+            </div>
+          </td>
         </tr>
-        <tr data-block="academic">
+        <tr>
+          <td class="col-stt">16</td>
           <td>
-            <div class="task-name">Theo dõi & Cập nhật Giáo trình / Giáo án <span class="priority-tag p-med">Trung bình</span></div>
-            <div class="task-desc">Đảm bảo GV nước ngoài dạy đúng chương trình, cập nhật bổ sung tài liệu kịp thời, phối hợp Logistics khi cần in ấn hoặc nhập tài liệu mới.</div>
+            <div class="task-name">Theo dõi các lớp hoàn thành (Finish)</div>
           </td>
-          <td><span class="owner-chip">Academic Mgr</span></td>
-          <td class="role-cell cell-I"><div class="badge">I</div></td>
-          <td class="role-cell cell-C"><div class="badge">C</div></td>
-          <td class="role-cell"><div class="badge badge-empty">&nbsp;</div></td>
-          <td class="role-cell"><div class="badge badge-empty">&nbsp;</div></td>
-          <td class="role-cell cell-C"><div class="badge">C</div></td>
-          <td class="role-cell cell-A"><div class="badge">A</div></td>
+          <td>
+            <span class="sla-single">Chốt danh sách lớp kết thúc tháng tiếp theo trước <span class="sla-time">ngày 25 tháng này</span> để chia data chăm sóc</span>
+          </td>
+          <td class="col-pic">
+            <div class="pic-wrap">
+              <span class="pic-chip chip-admin">Admin</span>
+              <span class="pic-note">Xuất dữ liệu cho EC</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="col-stt">17</td>
+          <td>
+            <div class="task-name">Kiểm kê & Báo cáo kho hàng</div>
+          </td>
+          <td>
+            <span class="sla-single">Kiểm đếm thực tế, đối chiếu hệ thống, nộp Inventory Report trước <span class="sla-time">17h00 ngày 28 hàng tháng</span></span>
+          </td>
+          <td class="col-pic">
+            <div class="pic-wrap">
+              <span class="pic-chip chip-admin">Admin</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="col-stt">18</td>
+          <td>
+            <div class="task-name">Chốt bảng lương & Hợp đồng TA</div>
+          </td>
+          <td>
+            <span class="sla-single">Đối soát Timesheet, chốt bảng lương TA gửi nhân sự trước <span class="sla-time">ngày 2 hàng tháng</span></span>
+          </td>
+          <td class="col-pic">
+            <div class="pic-wrap">
+              <span class="pic-chip chip-admin">Admin</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="col-stt">19</td>
+          <td>
+            <div class="task-name">Đào tạo nội bộ (Workshop / Training)</div>
+          </td>
+          <td>
+            <span class="sla-single">Tổ chức tối thiểu <span class="sla-time">1 buổi/tháng</span> nâng cao năng lực cho đội ngũ TA và Admission</span>
+          </td>
+          <td class="col-pic">
+            <div class="pic-wrap">
+              <span class="pic-chip chip-mgr">Quản lý</span>
+              <span class="pic-note">Người đứng lớp</span>
+            </div>
+          </td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <!-- NOTE -->
+  <!-- ══ BLOCK 4: THEO CHIẾN DỊCH ══ -->
+  <div class="block-header campaign" data-block="campaign">
+    <span class="block-num">CHU KỲ 04</span>
+    <span class="block-title">Theo Chiến Dịch / Theo Khóa Học</span>
+    <span class="block-sub">7 nhiệm vụ</span>
+  </div>
+  <div class="block-desc" data-block="campaign">
+    Nhóm công việc gắn liền với vòng đời của một lớp học từ lúc Khai giảng đến khi Bế giảng.
+  </div>
+  <div class="table-wrap" data-block="campaign">
+    <table>
+      <thead>
+        <tr>
+          <th class="col-stt">STT</th>
+          <th>Tên Nhiệm Vụ</th>
+          <th>Cam Kết Chất Lượng & Thời Gian (SLA)</th>
+          <th class="col-pic">PIC</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="col-stt">20</td>
+          <td>
+            <div class="task-name">Tuyển dụng TA mới</div>
+          </td>
+          <td>
+            <span class="sla-single">Từ lúc nhận yêu cầu đến khi có kết quả phỏng vấn: không quá <span class="sla-time">10 ngày làm việc</span></span>
+          </td>
+          <td class="col-pic">
+            <div class="pic-wrap">
+              <span class="pic-chip chip-admin">Admin</span>
+              <span class="pic-note">Phối hợp với HR</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="col-stt">21</td>
+          <td>
+            <div class="task-name">Đào tạo hội nhập TA mới (Induction)</div>
+          </td>
+          <td>
+            <span class="sla-single">Hoàn thành trong <span class="sla-time">3 ngày làm việc đầu tiên</span> — bắt buộc trước khi TA đứng lớp độc lập</span>
+          </td>
+          <td class="col-pic">
+            <div class="pic-wrap">
+              <span class="pic-chip chip-mgr">Quản lý</span>
+              <span class="pic-note">Hoặc TA Group Leader</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="col-stt">22</td>
+          <td>
+            <div class="task-name">Xếp lớp cho học viên mới</div>
+          </td>
+          <td>
+            <span class="sla-single">Hoàn thành xếp lớp trên CRM trong vòng <span class="sla-time">24h</span> kể từ khi khách đóng phí hoặc có kết quả test đầu vào</span>
+          </td>
+          <td class="col-pic">
+            <div class="pic-wrap">
+              <span class="pic-chip chip-ec">EC</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="col-stt">23</td>
+          <td>
+            <div class="task-name">Chuẩn bị thông tin mở lớp</div>
+          </td>
+          <td>
+            <span class="sla-single">Tạo lớp, cập nhật sĩ số, danh sách HV, gán GV/TA trên hệ thống hoàn chỉnh trước <span class="sla-time">48h trước Khai giảng</span></span>
+          </td>
+          <td class="col-pic">
+            <div class="pic-wrap">
+              <span class="pic-chip chip-admin">Admin</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="col-stt">24</td>
+          <td>
+            <div class="task-name">Tư vấn khóa học tiếp theo</div>
+          </td>
+          <td>
+            <span class="sla-single">Gọi điện / gặp trực tiếp tư vấn lộ trình tiếp theo cho phụ huynh tối thiểu <span class="sla-time">4 tuần trước khi khóa học kết thúc</span></span>
+          </td>
+          <td class="col-pic">
+            <div class="pic-wrap">
+              <span class="pic-chip chip-ec">EC</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="col-stt">25</td>
+          <td>
+            <div class="task-name">Chuẩn bị Chứng chỉ bế giảng</div>
+          </td>
+          <td>
+            <span class="sla-single">In ấn, ký duyệt, hoàn thiện chứng chỉ trước <span class="sla-time">buổi học cuối (Last lesson)</span> để trao tại lớp</span>
+          </td>
+          <td class="col-pic">
+            <div class="pic-wrap">
+              <span class="pic-chip chip-admin">Admin</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="col-stt">26</td>
+          <td>
+            <div class="task-name">Xử lý Kỷ luật / Đánh giá nhân sự</div>
+          </td>
+          <td>
+            <ul class="sla-list">
+              <li>Đánh giá hiệu suất (Appraisal): Theo niên độ ILA</li>
+              <li>Xử lý vi phạm: Lập biên bản trong vòng <span class="sla-time">24h</span> từ khi phát sinh sự việc</li>
+            </ul>
+          </td>
+          <td class="col-pic">
+            <div class="pic-wrap">
+              <span class="pic-chip chip-mgr">Quản lý</span>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══ BLOCK 5: ĐỘT XUẤT ══ -->
+  <div class="block-header adhoc" data-block="adhoc">
+    <span class="block-num">CHU KỲ 05</span>
+    <span class="block-title">Nhiệm Vụ Đột Xuất (Ad-hoc Tasks)</span>
+    <span class="block-sub">1 nhiệm vụ</span>
+  </div>
+  <div class="table-wrap" data-block="adhoc">
+    <table>
+      <thead>
+        <tr>
+          <th class="col-stt">STT</th>
+          <th>Tên Nhiệm Vụ</th>
+          <th>Cam Kết Chất Lượng & Thời Gian (SLA)</th>
+          <th class="col-pic">PIC</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="col-stt">27</td>
+          <td>
+            <div class="task-name">Các việc phát sinh do AS / CM giao</div>
+          </td>
+          <td>
+            <ul class="sla-list">
+              <li>Ca khẩn cấp: Phản hồi xác nhận trong <span class="sla-time">15 phút</span>, xử lý liên tục</li>
+              <li>Ca thông thường: Hoàn thành theo deadline được chốt lúc giao việc</li>
+            </ul>
+          </td>
+          <td class="col-pic">
+            <div class="pic-wrap">
+              <span class="pic-chip chip-ec">EC</span>
+              <span class="pic-chip chip-ta">TA</span>
+              <span class="pic-chip chip-admin">Admin</span>
+              <span class="pic-note">Tùy thuộc vào đầu việc</span>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- HƯỚNG DẪN SỬ DỤNG -->
   <div class="note">
-    <strong>📌 Ghi chú vận hành:</strong>
-    Mỗi task <strong class="hi">Accountable (A)</strong> chỉ được gán cho <strong>1 người duy nhất</strong>.
-    Nếu một task có nhiều hơn 1 người Responsible (R), cần chỉ định <strong>Lead R</strong> (người báo cáo kết quả cuối).
-    Bảng này nên được review mỗi quý hoặc khi có thay đổi nhân sự.
+    <h3>📑 Hướng dẫn sử dụng cho Quản lý mới</h3>
+    <ol>
+      <li><strong>Dùng làm File theo dõi chung (Dashboard):</strong> Copy bảng này vào một file Excel / Google Sheet chung của chi nhánh.</li>
+      <li><strong>Họp đầu tuần nhanh gọn:</strong> Vào thứ Hai, mở bảng ra, rà soát các mục <em>Hàng tuần</em> và <em>Hàng tháng</em> (nếu rơi vào tuần chốt số) để nhắc PIC tương ứng.</li>
+      <li><strong>Đánh giá nhân viên cuối tháng:</strong> Dựa vào cột SLA để check xem nhân viên có đạt chuẩn — từ đó tính điểm thưởng/phạt khách quan.</li>
+    </ol>
   </div>
 
 </div>
@@ -523,8 +846,10 @@
   function filterBlock(btn, filter) {
     document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
     btn.classList.add('active');
-    document.querySelectorAll('[data-block]').forEach(el => {
-      el.style.display = (filter === 'all' || el.getAttribute('data-block') === filter) ? '' : 'none';
+    ['block-header','block-desc','table-wrap'].forEach(cls => {
+      document.querySelectorAll('.' + cls + '[data-block]').forEach(el => {
+        el.style.display = (filter === 'all' || el.getAttribute('data-block') === filter) ? '' : 'none';
+      });
     });
   }
 </script>
